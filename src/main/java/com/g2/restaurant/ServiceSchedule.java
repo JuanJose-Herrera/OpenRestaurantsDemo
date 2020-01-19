@@ -26,16 +26,25 @@ public class ServiceSchedule {
 
     public boolean isRestaurantOpen(LocalDate date, LocalTime time){
         int dayOfWeek = date.getDayOfWeek().getValue();
+        //review that the open time and close time is in the same day
         if(this.openTime.getDayOfWeek().equals(this.closeTime.getDayOfWeek())) {
-            if (dayOfWeek >= this.getOpenTime().getDayOfWeek().getValue() && dayOfWeek <= this.getCloseTime().getDayOfWeek().getValue()) {
-                if ((time.isAfter(this.openTime.toLocalTime()) || time.equals(this.openTime.toLocalTime())) && (time.isBefore(this.closeTime.toLocalTime()) || time.equals(this.closeTime.toLocalTime()))) {
-                    return Boolean.TRUE;
-                }
+            //review  the day of the week is inside the open period
+            if (dayOfWeek >= this.openTime.getDayOfWeek().getValue()
+                    && dayOfWeek <= this.closeTime.getDayOfWeek().getValue()) {
+                        //if day is inside the period review that the time is inside the open period
+                        if ((time.isAfter(this.openTime.toLocalTime()) || time.equals(this.openTime.toLocalTime()))
+                                && time.isBefore(this.closeTime.toLocalTime())) {
+                            return Boolean.TRUE;
+                        }
             }
         }else{
-            if (dayOfWeek >= this.getOpenTime().getDayOfWeek().getValue() && dayOfWeek <= this.getCloseTime().getDayOfWeek().getValue()) {
-                if(this.openTime.getDayOfWeek().equals(date.getDayOfWeek()) && (time.isAfter(this.openTime.toLocalTime()) || time.equals(this.openTime.toLocalTime()))
-                    ||this.closeTime.getDayOfWeek().equals(date.getDayOfWeek()) && (time.isBefore(this.closeTime.toLocalTime()) || time.equals(this.closeTime.toLocalTime())))
+            //review  the day of the week is inside the open period
+            if (dayOfWeek >= this.openTime.getDayOfWeek().getValue()
+                    && dayOfWeek <= this.closeTime.getDayOfWeek().getValue()) {
+                //review if is open after the open time until the end of the day
+                if((this.openTime.getDayOfWeek().equals(date.getDayOfWeek()) && (time.isAfter(this.openTime.toLocalTime()) || time.equals(this.openTime.toLocalTime())))
+                        //review if is open before the close time in the next day
+                    || (this.closeTime.getDayOfWeek().equals(date.getDayOfWeek()) && time.isBefore(this.closeTime.toLocalTime()) ))
                 return Boolean.TRUE;
             }
         }

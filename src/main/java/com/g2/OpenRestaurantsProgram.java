@@ -32,10 +32,17 @@ public class OpenRestaurantsProgram {
                         schedule -> schedule.isRestaurantOpen(inputParameters.getDateFilter(), inputParameters.getTimeFilter())
                 )
         ).collect(Collectors.toList());
-        for (Restaurant restaurant:
-                filteredRestaurants) {
-            System.out.println(restaurant.getName());
+
+        if(filteredRestaurants.isEmpty()){
+            System.out.println(String.format("No restaurants open on %s at %s", inputParameters.getDateFilter().getDayOfWeek().name(),inputParameters.getTimeFilter().toString()));
+        }else {
+            System.out.println(String.format("The following restaurants are open on %s at %s :", inputParameters.getDateFilter().getDayOfWeek().name(),inputParameters.getTimeFilter().toString()));
+            for (Restaurant restaurant :
+                    filteredRestaurants) {
+                System.out.println(restaurant.getName());
+            }
         }
+
     }
 
 }
