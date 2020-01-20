@@ -12,11 +12,15 @@ following list will show how to fill the parameters:
 - t: this is the time (hour) to be used to filter the open restaurants, the format should be on 24 hours (two digits for hour and minutes) like the following examples: 03:30, 10:30, 18:21 or 21:00
 #### Please try the following command:
  
-`mvn exec:java -D exec.mainClass=com.g2.OpenRestaurantsProgram -D exec.args="-f'E:\Mis Documentos\G2WebServices\OpenRestaurantsDemo\src\main\resources\restaurant_hours.csv' -dTue -t00:30"`
+`mvn package exec:java -D exec.mainClass=com.g2.OpenRestaurantsProgram -D exec.args="-f'E:\Mis Documentos\G2WebServices\OpenRestaurantsDemo\src\main\resources\restaurant_hours.csv' -dTue -t00:30"`
+
+Note: you can remove the package instruction if you already package the program before.
 
 #### In order to run it from the JAR, execute the following command:
 
 `java -jar .\OpenRestaurantsDemo-1.0-SNAPSHOT-jar-with-dependencies.jar -f'E:\Mis Documentos\G2WebServices\OpenRestaurantsDemo\src\main\resources\restaurant_hours.csv' -d Tue -t 00:30`
+
+For this last instruction the jar OpenRestaurantsDemo-1.0-SNAPSHOT-jar-with-dependencies.jar should be available in the folder that you run the command. 
 
 Note: if the restaurant close at 19:30 every friday, and you search for an open restaurant on friday at 19:30 will not appear on the results, the system takes this as already closed restaurant. 
  
