@@ -107,25 +107,7 @@ public class ServiceScheduleCVSParserImpl implements ServiceScheduleCVSParser {
     private ServiceSchedule parseDaySchedule(String strSchedule, TimeInterval timeInterval) throws ParseException {
         DayOfWeek dayOfWeek = dayFormat.parse(strSchedule.substring(0, 3)).toInstant().atZone(ZoneId.systemDefault()).toLocalDate().getDayOfWeek();
 
-        ServiceSchedule serviceSchedule = new ServiceSchedule();
-
-        serviceSchedule.setOpenTime(
-                LocalDateTime.of(
-                        LocalDate.of(1970, 1, 4),
-                        timeInterval.getInitialTime()
-                ).with(TemporalAdjusters.next(dayOfWeek)));
-
-        LocalDateTime localEndTime = LocalDateTime.of(
-                LocalDate.of(1970, 1, 4),
-                timeInterval.getEndTime()
-        ).with(TemporalAdjusters.next(dayOfWeek));
-
-        if(timeInterval.getEndTime().isAfter(LocalTime.of(0,0,0))
-            && timeInterval.getEndTime().isBefore(timeInterval.getInitialTime())){
-            localEndTime = localEndTime.plusDays(1);
-        }
-
-        serviceSchedule.setCloseTime(localEndTime);
+        ServiceSchedule serviceSchedule = setOpenAndCloseTime(timeInterval, dayOfWeek.getValue());
 
 
         return serviceSchedule;
@@ -143,28 +125,33 @@ public class ServiceScheduleCVSParserImpl implements ServiceScheduleCVSParser {
         int endDay = getDaysInterval.getEndDay();
 
         for (int startLoop = startDay; startLoop <= endDay; startLoop++) {
-            ServiceSchedule serviceSchedule = new ServiceSchedule();
-
-            serviceSchedule.setOpenTime(
-                    LocalDateTime.of(
-                            LocalDate.of(1970, 1, 4),
-                            timeInterval.getInitialTime()
-                    ).with(TemporalAdjusters.next(DayOfWeek.of(startLoop))));
-
-            LocalDateTime localEndTime= LocalDateTime.of(
-                    LocalDate.of(1970, 1, 4),
-                    timeInterval.getEndTime()
-            ).with(TemporalAdjusters.next(DayOfWeek.of(startLoop)));
-
-            if(timeInterval.getEndTime().isAfter(LocalTime.of(0,0,0))
-                    && timeInterval.getEndTime().isBefore(timeInterval.getInitialTime())){
-                localEndTime = localEndTime.plusDays(1);
-            }
-            serviceSchedule.setCloseTime(localEndTime);
+            ServiceSchedule serviceSchedule = setOpenAndCloseTime(timeInterval, startLoop);
 
             serviceScheduleList.add(serviceSchedule);
         }
         return serviceScheduleList;
+    }
+
+    private ServiceSchedule setOpenAndCloseTime(TimeInterval timeInterval, int dayOfWeek) {
+        ServiceSchedule serviceSchedule = new ServiceSchedule();
+
+        serviceSchedule.setOpenTime(
+                LocalDateTime.of(
+                        LocalDate.of(1970, 1, 4),
+                        timeInterval.getInitialTime()
+                ).with(TemporalAdjusters.next(DayOfWeek.of(dayOfWeek))));
+
+        LocalDateTime localEndTime= LocalDateTime.of(
+                LocalDate.of(1970, 1, 4),
+                timeInterval.getEndTime()
+        ).with(TemporalAdjusters.next(DayOfWeek.of(dayOfWeek)));
+
+        if ((timeInterval.getEndTime().isAfter(LocalTime.of(0,0,0)) || timeInterval.getEndTime().equals(LocalTime.of(0,0,0)))
+                && timeInterval.getEndTime().isBefore(timeInterval.getInitialTime())){
+            localEndTime = localEndTime.plusDays(1);
+        }
+        serviceSchedule.setCloseTime(localEndTime);
+        return serviceSchedule;
     }
 
 
