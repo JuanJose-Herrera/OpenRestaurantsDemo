@@ -9,8 +9,7 @@ following list will show how to fill the parameters:
 - f: this is the input file that should contains the list of restaurants with the service schedules, the path should be an absolute path.
 - d: this is the day to filter the open restaurants, this parameters should be send in 3 letters format in english 
 (Mon,Tue,Wen,Thu,Fri,Sat,Sun) 
-- t: this is the time (hour) to be used to filter the open restaurants, the format should be on 24 hours like the following examples: 10:30, 18:21 or 21
-
+- t: this is the time (hour) to be used to filter the open restaurants, the format should be on 24 hours (two digits for hour and minutes) like the following examples: 03:30, 10:30, 18:21 or 21:00
 #### Please try the following command:
  
 `mvn exec:java -D exec.mainClass=com.g2.OpenRestaurantsProgram -D exec.args="-f'E:\Mis Documentos\G2WebServices\OpenRestaurantsDemo\src\main\resources\restaurant_hours.csv' -dTue -t00:30"`

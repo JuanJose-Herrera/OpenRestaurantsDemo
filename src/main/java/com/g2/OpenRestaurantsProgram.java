@@ -22,6 +22,10 @@ public class OpenRestaurantsProgram {
         InputParametersParser inputParametersParser= new InputParametersParserImpl();
         InputParameters inputParameters = inputParametersParser.parseCommandLineParameters(args);
 
+        //review if the input parameters was parsed correctly, if not, end the program.
+        if(null == inputParameters){
+            return;
+        }
         RestaurantCsvFileParser restaurantCsvFileParser = new RestaurantCsvFileParserImpl();
         final List<Restaurant> restaurants = restaurantCsvFileParser.getRestaurantsFromCVSFile(inputParameters.getFilePath());
 
